@@ -77,6 +77,10 @@ class {module_name_pascal}Binding extends Bindings {{
     Get.lazyPut(() => {module_name_pascal}ViewMode());
     Get.lazyPut(() => {module_name_pascal}Service());
   }}
+//lib/router/app_pages.dart
+//static const String {module_name_pascal[:1].lower()}{module_name_pascal[1:]} = "/Top/{module_name_pascal[:1].lower()}{module_name_pascal[1:]}";
+//lib/router/app_routes.dart
+//GetPage(name: Routes.{module_name_pascal}, page: () => const {module_name_pascal}Page(), bindings: [{module_name_pascal}Binding()]),
 }}
 '''
     filepath = f'lib/module/{module_path}/{module_name_snake}/{module_name_snake}_binding.dart'
