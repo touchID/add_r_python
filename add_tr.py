@@ -1,4 +1,4 @@
-# python3 add_translation.py lib/translations/app_translations.dart lib/translations/ja_jp/ja_jp_translations.dart myNewKey '新し い文言'
+# python3 add_translation.py lib/translations/app_translations.dart lib/translations/ja_jp/ja_jp_translations.dart myNewKey '新しい文言'
 # 已在 app_translations.dart 中插入: myNewKey
 # 插入位置: 第 26 行
 # 已在 ja_jp_translations.dart 中插入: Globalization.myNewKey
@@ -10,7 +10,7 @@ import re
 import sys
 # python3 add_translation.py <app_translations.dart路径> <ja_jp_translations.dart路径> <键名> <日文翻译内容> [注释]
 # python3 add_translation.py --auto --service Google lib/translations/app_translations.dart lib/translations/ja_jp/ja_jp_translations.dart myNewKey '新しい文言'
-def insert_app_translation_key(app_translations_path, key_name, comment=""):
+def insert_app_translation_key(app_translations_path, key_name):
     """在 app_translations.dart 中插入新的翻译键"""
     with open(app_translations_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -47,16 +47,11 @@ def insert_app_translation_key(app_translations_path, key_name, comment=""):
     indent = re.match(r'^\s*', first_const[2]).group()
     
     # 构建新行
-    if comment:
-        comment_line = f"{indent}/// {comment}\n"
-        lines.insert(insert_index, comment_line)
-        insert_index += 1
-    
     new_line = f'{indent}static const String {key_name} = "{key_name}";\n'
     lines.insert(insert_index, new_line)
     
-    # 写回文件
-    with open(app_translations_path, 'w', encoding='utf-8') as f:
+    # 写回文件（使用 CRLF 换行符）
+    with open(app_translations_path, 'w', encoding='utf-8', newline='\r\n') as f:
         f.writelines(lines)
     
     print(f"已在 app_translations.dart 中插入: {key_name}")
@@ -104,8 +99,8 @@ def insert_jp_translation(jp_translations_path, key_name, translation):
     new_line = f'{indent}Globalization.{key_name}: "{translation}",\n'
     lines.insert(insert_index, new_line)
     
-    # 写回文件
-    with open(jp_translations_path, 'w', encoding='utf-8') as f:
+    # 写回文件（使用 CRLF 换行符）
+    with open(jp_translations_path, 'w', encoding='utf-8', newline='\r\n') as f:
         f.writelines(lines)
     
     print(f"已在 ja_jp_translations.dart 中插入: Globalization.{key_name}")
@@ -115,19 +110,19 @@ def insert_jp_translation(jp_translations_path, key_name, translation):
     return True
 
 def main():
-    if len(sys.argv) < 5:
-        print("用法: python add_translation.py <app_translations.dart路径> <ja_jp_translations.dart路径> <键名> <日文翻译内容> [注释]")
-        print("示例: python add_translation.py lib/translations/app_translations.dart lib/translations/ja_jp/ja_jp_translations.dart myNewKey '新しい文言'")
+    if len(sys.argv) != 3:
+        print("用法: python add_translation.py <键名> <日文翻译内容>")
+        print("示例: python add_translation.py myNewKey '新しい文言'")
         sys.exit(1)
     
-    app_path = sys.argv[1]
-    jp_path = sys.argv[2]
-    key_name = sys.argv[3]
-    translation = sys.argv[4]
-    comment = sys.argv[5] if len(sys.argv) > 5 else ""
+    # 使用固定路径
+    app_path = "lib/translations/app_translations.dart"
+    jp_path = "lib/translations/ja_jp/ja_jp_translations.dart"
+    key_name = sys.argv[1]
+    translation = sys.argv[2]
     
     try:
-        success1 = insert_app_translation_key(app_path, key_name, comment)
+        success1 = insert_app_translation_key(app_path, key_name)
         success2 = insert_jp_translation(jp_path, key_name, translation)
         
         if success1 and success2:

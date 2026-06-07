@@ -100,8 +100,8 @@ def insert_asset(r_dart_path, asset_path):
     # 插入新行
     lines.insert(insert_index, new_line)
     
-    # 写回文件
-    with open(r_dart_path, 'w', encoding='utf-8') as f:
+    # 写回文件（使用 CRLF 换行符）
+    with open(r_dart_path, 'w', encoding='utf-8', newline='\r\n') as f:
         f.writelines(lines)
     
     print(f"已成功插入素材: {var_name}")
@@ -111,13 +111,14 @@ def insert_asset(r_dart_path, asset_path):
     return True
 
 def main():
-    if len(sys.argv) != 3:
-        print("用法: python add_asset.py <r.dart路径> <素材路径>")
-        print("示例: python add_asset.py lib/generated/assets/r.dart assets/images/order/icon_order_cpu.svg")
+    if len(sys.argv) != 2:
+        print("用法: python add_asset.py <素材路径>")
+        print("示例: python add_asset.py assets/images/order/icon_order_cpu.svg")
         sys.exit(1)
     
-    r_dart_path = sys.argv[1]
-    asset_path = sys.argv[2]
+    # 使用固定路径
+    r_dart_path = "lib/generated/assets/r.dart"
+    asset_path = sys.argv[0]
     
     try:
         success = insert_asset(r_dart_path, asset_path)
