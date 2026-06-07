@@ -175,12 +175,10 @@ def generate_view_mode(module_name_pascal, module_name_snake, module_path):
     """生成 view_mode 文件"""
     content = f'''import 'package:get/get.dart';
 import 'package:shisankeisei/base/mvvm/view_mode/multi_net_data.dart';
-import 'package:shisankeisei/base/mvvm/view_mode/session_change_mixin.dart';
 import 'package:shisankeisei/base/mvvm/view_mode/view_mode.dart';
 import 'package:shisankeisei/base/net/base_api_use_case.dart';
 import 'package:shisankeisei/data/provider/service/{module_name_snake}_service.dart';
 import 'package:shisankeisei/data/provider/use_case/{module_name_snake}_api_use_case.dart';
-import 'package:shisankeisei/module/my_page/my_page_base/myPageSessionChangeMixin.dart';
 import 'package:shisankeisei/utils/master_code_util.dart';
 
 import '{module_name_snake}_state.dart';
@@ -191,7 +189,7 @@ import '{module_name_snake}_state.dart';
 ///
 /// [date] 2025/07/11
 class {module_name_pascal}ViewMode extends ViewMode<{module_name_pascal}Actions, {module_name_pascal}Service> {{
-  final {module_name_pascal}State {module_name_snake}State = {module_name_pascal}State();
+  final {module_name_pascal}State {module_name_pascal[:1].lower()}{module_name_pascal[1:]}State = {module_name_pascal}State();
 
   @override
   void onInit() {{
@@ -201,16 +199,16 @@ class {module_name_pascal}ViewMode extends ViewMode<{module_name_pascal}Actions,
   @override
   dispatch({module_name_pascal}Actions action) {{
     return switch (action) {{
-      Fetch{module_name_pascal} {module_name_snake} => request(api.get{module_name_pascal}({module_name_snake}.request), action: action, handleLoading: true),
+      Fetch{module_name_pascal} {module_name_pascal[:1].lower()}{module_name_pascal[1:]} => request(api.get{module_name_pascal}({module_name_pascal[:1].lower()}{module_name_pascal[1:]}.request), action: action, handleLoading: true),
     }};
   }}
 
   @override
   void onValue(MultiNetData netData, {module_name_pascal}Actions action) {{
     switch (action) {{
-      case Fetch{module_name_pascal}(request: final {module_name_snake}Request):
+      case Fetch{module_name_pascal}(request: final {module_name_pascal[:1].lower()}{module_name_pascal[1:]}Request):
         if ((netData[0] as ResponseEntity).result == APIResult.success) {{
-          {module_name_snake}Request?.callback?.call();
+          {module_name_pascal[:1].lower()}{module_name_pascal[1:]}Request?.callback?.call();
         }}
         break;
     }}
