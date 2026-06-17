@@ -36,12 +36,14 @@ def main():
     print("✅ build.yaml 生成成功")
     print("🚀 开始构建...\n")
 
-    # 执行构建
+    # 执行构建（使用默认命令，默认添加 --delete-conflicting-outputs）
     try:
-        subprocess.run([
-            "flutter", "pub", "run", "build_runner", "build",
+        result = subprocess.run([
+            "dart", "run", "build_runner", "build",
             "--delete-conflicting-outputs"
-        ], check=True)
+        ], check=False)
+        if result.returncode != 0:
+            print(f"⚠️ 构建命令返回非零状态: {result.returncode}")
     finally:
         # ✅ 构建完自动删除 build.yaml
         if os.path.exists("build.yaml"):
